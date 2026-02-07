@@ -10,8 +10,6 @@ public class EmitParticlesOnLand : MonoBehaviour
     public bool emitOnLand = true;
     public bool emitOnEnemyDeath = true;
 
-#if UNITY_TEMPLATE_PLATFORMER
-
     ParticleSystem p;
 
     void Start()
@@ -27,7 +25,5 @@ public class EmitParticlesOnLand : MonoBehaviour
 
 
     }
-
-#endif
 
 }
