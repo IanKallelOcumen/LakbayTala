@@ -1,18 +1,12 @@
-<<<<<<< HEAD
-=======
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
 using UnityEngine;
 using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
 using UnityEngine.InputSystem;
-<<<<<<< HEAD
 using LakbayTala.Config;
-=======
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
 
 namespace Platformer.Mechanics
 {
@@ -22,7 +16,6 @@ namespace Platformer.Mechanics
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-<<<<<<< HEAD
         public float maxSpeed = 7f;
         public float jumpTakeOffSpeed = 7f;
 
@@ -31,19 +24,11 @@ namespace Platformer.Mechanics
         public float coyoteTime = 0.12f;
         [Tooltip("Time before landing that a jump press is buffered and executed on land.")]
         public float jumpBufferTime = 0.15f;
-=======
-        public float maxSpeed = 7;
-        public float jumpTakeOffSpeed = 7;
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
 
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
         public Collider2D collider2d;
         public AudioSource audioSource;
-<<<<<<< HEAD
-=======
-        // public Health health; // REMOVED
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
         public bool controlEnabled = true;
 
         bool jump;
@@ -54,26 +39,18 @@ namespace Platformer.Mechanics
 
         private InputAction m_MoveAction;
         private InputAction m_JumpAction;
-<<<<<<< HEAD
         private float coyoteTimeLeft;
         private float jumpBufferLeft;
-=======
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
 
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
         {
-<<<<<<< HEAD
-=======
-            // health = GetComponent<Health>(); // REMOVED
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
             audioSource = GetComponent<AudioSource>();
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
 
-<<<<<<< HEAD
             var playerInput = GetComponent<PlayerInput>();
             if (playerInput != null)
             {
@@ -94,17 +71,6 @@ namespace Platformer.Mechanics
                 GameSettings s = MasterGameManager.Instance.Settings;
                 maxSpeed = s.movementSpeed;
                 jumpTakeOffSpeed = s.jumpForce;
-=======
-            // Input System setup
-            var playerInput = GetComponent<PlayerInput>();
-            if (playerInput != null) {
-                m_MoveAction = playerInput.actions["Move"];
-                m_JumpAction = playerInput.actions["Jump"];
-            } else {
-                 // Fallback if PlayerInput component is missing, looks for global asset
-                 m_MoveAction = InputSystem.actions.FindAction("Player/Move");
-                 m_JumpAction = InputSystem.actions.FindAction("Player/Jump");
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
             }
         }
 
@@ -113,7 +79,6 @@ namespace Platformer.Mechanics
             if (controlEnabled && m_MoveAction != null)
             {
                 move.x = m_MoveAction.ReadValue<Vector2>().x;
-<<<<<<< HEAD
 
                 bool jumpPressed = m_JumpAction != null && m_JumpAction.WasPressedThisFrame();
                 if (jumpPressed)
@@ -124,12 +89,6 @@ namespace Platformer.Mechanics
                         jumpBufferLeft = jumpBufferTime;
                 }
                 if (m_JumpAction != null && m_JumpAction.WasReleasedThisFrame())
-=======
-                
-                if (jumpState == JumpState.Grounded && m_JumpAction.WasPressedThisFrame())
-                    jumpState = JumpState.PrepareToJump;
-                else if (m_JumpAction.WasReleasedThisFrame())
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
@@ -139,7 +98,6 @@ namespace Platformer.Mechanics
             {
                 move.x = 0;
             }
-<<<<<<< HEAD
 
             if (!IsGrounded)
             {
@@ -157,8 +115,6 @@ namespace Platformer.Mechanics
                 }
             }
 
-=======
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
             UpdateJumpState();
             base.Update();
         }
@@ -178,10 +134,7 @@ namespace Platformer.Mechanics
                     {
                         Schedule<PlayerJumped>().player = this;
                         jumpState = JumpState.InFlight;
-<<<<<<< HEAD
                         coyoteTimeLeft = coyoteTime;
-=======
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
                     }
                     break;
                 case JumpState.InFlight:
@@ -196,7 +149,6 @@ namespace Platformer.Mechanics
                     break;
             }
         }
-<<<<<<< HEAD
 
         protected override void ComputeVelocity()
         {
@@ -205,16 +157,6 @@ namespace Platformer.Mechanics
                 velocity.y = jumpTakeOffSpeed * model.jumpModifier;
                 jump = false;
                 coyoteTimeLeft = 0f;
-=======
-        
-
-        protected override void ComputeVelocity()
-        {
-            if (jump && IsGrounded)
-            {
-                velocity.y = jumpTakeOffSpeed * model.jumpModifier;
-                jump = false;
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
             }
             else if (stopJump)
             {
@@ -246,11 +188,7 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
-<<<<<<< HEAD
 
-=======
-        // Add this to the bottom of PlayerController.cs
->>>>>>> cc13d476401456216a06540c93347c14c71e8946
         public void ApplyBounce(float force)
         {
             // This modifies the internal velocity of the controller
