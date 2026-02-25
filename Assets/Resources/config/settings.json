@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "movementSpeed": 7.0,
+  "jumpForce": 7.0,
+  "encounterRate": 0.15,
+  "resourceSpawnRate": 1.0,
+  "difficulty": "normal",
+  "seed": 0
+}
