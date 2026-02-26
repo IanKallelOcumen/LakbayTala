@@ -1,103 +1,139 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using Platformer.Mechanics;
+using Platformer.Model;
+using Platformer.Core;
+using Platformer.Gameplay;
 
+/// <summary>
+/// Handles checkpoint triggers (delegate to SpawnPoint via CheckpointBehavior on the checkpoint object),
+/// trap death, and enemy collision (stomp vs side-hit). Respawns at SpawnPoint via Simulation.
+/// Uses polling every frame so death works even when physics callbacks don't fire (e.g. kinematic player).
+/// </summary>
 public class SimpleCheckpoint : MonoBehaviour
 {
-    // ===========================================
-    // STATIC VARIABLES (Functional Checkpoint Memory)
-    // ===========================================
-    public static Vector3 savedPosition;
-    public static bool hasCheckpoint = false;
-    
-    [Header("Manager Settings")]
-    public float respawnDelay = 1.5f; 
-    public float bounceForce = 8f; 
-    
-    private bool isStompInvulnerable = false; 
+    [Header("Respawn")]
+    public float respawnDelay = 1.5f;
+    public float bounceForce = 8f;
 
-    // We remove all complex Coroutine references, keeping the script clean.
-    
-    IEnumerator Start()
+    [Header("Polling (fallback so death always works)")]
+    public float killY = -50f;
+    public float trapCheckRadius = 0.5f;
+    public float enemyCheckRadius = 0.6f;
+
+    bool isDead;
+    static readonly List<Collider2D> s_overlapList = new List<Collider2D>();
+
+    void FixedUpdate()
     {
-        // Teleport logic (Original stable version)
-        if (hasCheckpoint)
-        {
-            yield return new WaitForSeconds(0.1f); 
-            transform.position = savedPosition;
+        if (isDead) return;
 
+        Vector2 pos = transform.position;
+
+        // 1) Fall off the level
+        if (pos.y < killY)
+        {
+            RequestDeath();
+            return;
+        }
+
+        // 2) Standing in a trap?
+        s_overlapList.Clear();
+        Physics2D.OverlapCircle(pos, trapCheckRadius, ContactFilter2D.noFilter, s_overlapList);
+        foreach (var c in s_overlapList)
+        {
+            if (c != null && c.CompareTag("Trap"))
+            {
+                RequestDeath();
+                return;
+            }
+        }
+
+        // 3) Touching an enemy from the side? (not stomping)
+        s_overlapList.Clear();
+        Physics2D.OverlapCircle(pos, enemyCheckRadius, ContactFilter2D.noFilter, s_overlapList);
+        var myBounds = GetComponent<Collider2D>();
+        float myBottom = myBounds != null ? myBounds.bounds.min.y : pos.y - 0.5f;
+        foreach (var c in s_overlapList)
+        {
+            if (c == null || !c.CompareTag("Enemy")) continue;
+            var b = c.bounds;
+            // Stomp = our bottom is above their top. So if our bottom is NOT above their top, it's a side hit -> die
+            if (myBottom <= b.max.y + 0.15f)
+            {
+                RequestDeath();
+                return;
+            }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other == null || isDead) return;
+        if (other.CompareTag("Trap"))
+        {
+            DieAndRescheduleRespawn();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision == null || collision.gameObject == null || isDead) return;
+        if (!collision.gameObject.CompareTag("Enemy")) return;
+        if (collision.contactCount == 0) return;
+
+        Vector2 hitDirection = collision.GetContact(0).normal;
+        if (hitDirection.y > 0.5f)
+        {
+            Destroy(collision.gameObject);
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero; 
-            }
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, bounceForce);
         }
-    }
-
-    // ------------------------------------------
-    // 1. COLLISION & TRIGGER DETECTION
-    // ------------------------------------------
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // Checkpoint Save Logic
-        if (other.CompareTag("Checkpoint"))
+        else
         {
-            savedPosition = other.transform.position;
-            hasCheckpoint = true;
-            Debug.Log("Progress Saved!");
-        }
-        else if (other.CompareTag("Trap")) 
-        {
-            // Simple Death Logic (Reloads the scene)
-            StartCoroutine(SimpleDieAndReload());
+            DieAndRescheduleRespawn();
         }
     }
 
-    // ------------------------------------------
-    // 2. STOMP / DEATH LOGIC (The last working code logic)
-    // ------------------------------------------
-    
-    private void OnCollisionEnter2D(Collision2D collision)
+    /// <summary>Call from trap/enemy scripts when they detect the player. Works even if the player's collider doesn't receive the callback (e.g. kinematic).</summary>
+    public void RequestDeath()
     {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Vector2 hitDirection = collision.contacts[0].normal;
-
-            if (hitDirection.y > 0.5f) // Stomp Logic
-            {
-                // This is the code that caused the constant jump bug. We remove it for stability.
-                // However, for the revert, we return to the state where the code just tried to destroy.
-                Destroy(collision.gameObject);
-                
-                Rigidbody2D rb = GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, bounceForce); 
-                }
-            }
-            else
-            {
-                // Side Hit Logic: Player dies
-                StartCoroutine(SimpleDieAndReload());
-            }
-        }
+        DieAndRescheduleRespawn();
     }
-    
-    // ------------------------------------------
-    // 3. SUPPORT & ROUTINES
-    // ------------------------------------------
-    
-    // The essential die function: just reloads the scene
-    IEnumerator SimpleDieAndReload()
+
+    void DieAndRescheduleRespawn()
     {
-        // This is the simplest death, which assumes PlayerController is managing control
-        Debug.Log("Player Died! Reloading scene...");
-        yield return new WaitForSeconds(respawnDelay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (isDead) return;
+        isDead = true;
+        var model = Simulation.GetModel<PlatformerModel>();
+        if (model != null && model.player != null)
+        {
+            model.player.controlEnabled = false;
+            if (model.player.collider2d != null)
+                model.player.collider2d.enabled = false;
+        }
+        if (TryGetComponent(out Animator anim) && anim != null)
+            anim.SetBool("dead", true);
+        if (model != null && model.spawnPoint != null)
+            Simulation.Schedule<PlayerSpawn>(respawnDelay);
+        else
+            Invoke(nameof(ReloadScene), respawnDelay);
     }
 
-    // We keep these methods empty to prevent compile errors in other scripts that might still call them
-    public void UpdateLivesDisplay() {}
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void OnEnable()
+    {
+        isDead = false;
+    }
+
+    public void SetAlive() { isDead = false; }
+
+    public void UpdateLivesDisplay() { }
 }

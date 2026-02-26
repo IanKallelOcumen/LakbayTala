@@ -1,30 +1,24 @@
 using UnityEngine;
 
+/// <summary>
+/// Put on the checkpoint GameObject (with trigger collider). When the player touches it,
+/// moves the scene's SpawnPoint here so respawn uses this position.
+/// </summary>
 public class CheckpointBehavior : MonoBehaviour
 {
-    // This function runs when something enters the Green Box
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Check if it is the Player
-        if (collision.CompareTag("Player"))
-        {
-            // 1. Find the object named "SpawnPoint" in the scene
-            GameObject globalSpawnPoint = GameObject.Find("SpawnPoint");
+    [Tooltip("If set, use this transform as the spawn position. Otherwise uses this GameObject.")]
+    public Transform spawnAnchor;
+    Transform cachedSpawnPoint;
 
-            if (globalSpawnPoint != null)
-            {
-                // 2. Move the SpawnPoint to THIS checkpoint's location
-                globalSpawnPoint.transform.position = transform.position;
-                
-                Debug.Log("SpawnPoint Moved! Game Saved.");
-                
-                // (Optional) Disable this checkpoint so you don't trigger it twice
-                // GetComponent<Collider2D>().enabled = false; 
-            }
-            else
-            {
-                Debug.LogError("Could not find an object named 'SpawnPoint'!");
-            }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision == null || !collision.CompareTag("Player")) return;
+        Transform target = spawnAnchor != null ? spawnAnchor : transform;
+        if (cachedSpawnPoint == null)
+            cachedSpawnPoint = GameObject.Find("SpawnPoint")?.transform;
+        if (cachedSpawnPoint != null)
+        {
+            cachedSpawnPoint.position = target.position;
         }
     }
 }

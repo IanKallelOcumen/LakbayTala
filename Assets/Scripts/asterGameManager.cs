@@ -23,6 +23,9 @@ public class MasterGameManager : MonoBehaviour
     public CanvasGroup mapScreen;
     public CanvasGroup bestiaryScreen;
     public CanvasGroup infoScreen;
+    public CanvasGroup leaderboardScreen;
+    public CanvasGroup settingsScreen;
+    public CanvasGroup achievementsScreen;
 
     [Header("MAP SCREEN ELEMENTS")]
     [Tooltip("The parent object containing Laguna location choices (e.g. Mount Makiling, Lake Mohikap, Sampaloc, Botocan).")]
@@ -118,6 +121,9 @@ public class MasterGameManager : MonoBehaviour
 
     public void OnBestiary() => ShowScreen(bestiaryScreen);
     public void OnInfo() => ShowScreen(infoScreen);
+    public void OnLeaderboard() => ShowScreen(leaderboardScreen);
+    public void OnSettings() => ShowScreen(settingsScreen);
+    public void OnAchievements() => ShowScreen(achievementsScreen);
 
     public void OnLandOfMaharlika()
     {
@@ -132,6 +138,8 @@ public class MasterGameManager : MonoBehaviour
     {
         if (_currentScreen == infoScreen)
             ShowScreen(bestiaryScreen);
+        else if (_currentScreen == leaderboardScreen || _currentScreen == settingsScreen || _currentScreen == achievementsScreen)
+            ShowScreen(lobbyScreen);
         else if (_currentScreen == mapScreen || _currentScreen == bestiaryScreen)
             ShowScreen(lobbyScreen);
         else
@@ -140,6 +148,7 @@ public class MasterGameManager : MonoBehaviour
 
     private void ShowScreen(CanvasGroup targetScreen)
     {
+        if (targetScreen == null) return;
         _currentScreen = targetScreen;
         StopAllCoroutines();
         StartCoroutine(TransitionSequence(targetScreen));
@@ -152,7 +161,7 @@ public class MasterGameManager : MonoBehaviour
             blackOverlay.blocksRaycasts = true;
             yield return StartCoroutine(FadeCanvasGroup(blackOverlay, 1f));
         }
-        CanvasGroup[] allScreens = { lobbyScreen, mapScreen, bestiaryScreen, infoScreen };
+        CanvasGroup[] allScreens = { lobbyScreen, mapScreen, bestiaryScreen, infoScreen, leaderboardScreen, settingsScreen, achievementsScreen };
         foreach (CanvasGroup screen in allScreens)
         {
             if (screen == null) continue;

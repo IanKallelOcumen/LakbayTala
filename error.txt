@@ -1,0 +1,100 @@
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(58,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(58,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(82,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(82,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(114,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(114,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(147,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(147,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(192,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(192,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(247,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(247,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(225,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(225,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(251,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(251,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(259,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(259,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(293,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(293,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(296,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(296,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(324,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(324,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(347,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(347,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(371,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(371,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(347,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(347,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(396,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(396,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(377,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(377,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(427,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(427,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(450,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardFirebaseIntegrationTests.cs(450,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(412,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(412,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(493,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(493,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(521,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(521,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(563,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(563,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(608,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(608,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(638,6): error CS0246: The type or namespace name 'UnityTestAttribute' could not be found (are you missing a using directive or an assembly reference?)
+
+Assets\Scripts\Tests\LeaderboardTests.cs(638,6): error CS0246: The type or namespace name 'UnityTest' could not be found (are you missing a using directive or an assembly reference?)
+

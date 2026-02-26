@@ -25,10 +25,35 @@ namespace Platformer.Mechanics
             Instance = this;
         }
 
+        void Awake()
+        {
+            BackgroundBootstrap.EnsureBackgroundInUse();
+        }
+
         void Start()
         {
+            // Always find player by tag and ensure SimpleCheckpoint exists (don't rely on model.player)
+            var playerGo = GameObject.FindWithTag("Player");
+            if (playerGo != null)
+            {
+                if (playerGo.GetComponent<SimpleCheckpoint>() == null)
+                    playerGo.AddComponent<SimpleCheckpoint>();
+                if (model != null)
+                    model.player = playerGo.GetComponent<PlayerController>();
+            }
             if (model != null)
                 model.currentTalaCollected = 0;
+            // Traps: add DeathTrigger so when player enters trigger, player dies
+            foreach (var go in GameObject.FindGameObjectsWithTag("Trap"))
+            {
+                if (go.GetComponent<Collider2D>() != null && go.GetComponent<DeathTrigger>() == null)
+                    go.AddComponent<DeathTrigger>();
+            }
+            foreach (var go in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                if (go.GetComponent<EnemyDamagePlayer>() == null)
+                    go.AddComponent<EnemyDamagePlayer>();
+            }
         }
 
         void OnDisable()

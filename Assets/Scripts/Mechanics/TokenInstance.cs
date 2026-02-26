@@ -33,9 +33,9 @@ namespace Platformer.Mechanics
         void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();
-            if (randomAnimationStartTime)
+            sprites = (idleAnimation != null && idleAnimation.Length > 0) ? idleAnimation : new Sprite[0];
+            if (randomAnimationStartTime && sprites.Length > 0)
                 frame = Random.Range(0, sprites.Length);
-            sprites = idleAnimation;
         }
 
         void OnTriggerEnter2D(Collider2D other)

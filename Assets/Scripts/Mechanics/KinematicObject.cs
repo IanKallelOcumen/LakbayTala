@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -65,6 +65,7 @@ namespace Platformer.Mechanics
         /// <param name="position"></param>
         public void Teleport(Vector3 position)
         {
+            if (body == null) return;
             body.position = position;
             velocity *= 0;
             body.linearVelocity *= 0;
@@ -73,12 +74,14 @@ namespace Platformer.Mechanics
         protected virtual void OnEnable()
         {
             body = GetComponent<Rigidbody2D>();
-            body.bodyType = RigidbodyType2D.Kinematic;
+            if (body != null)
+                body.bodyType = RigidbodyType2D.Kinematic;
         }
 
         protected virtual void OnDisable()
         {
-            body.bodyType = RigidbodyType2D.Dynamic;
+            if (body != null)
+                body.bodyType = RigidbodyType2D.Dynamic;
         }
 
         protected virtual void Start()
@@ -101,6 +104,7 @@ namespace Platformer.Mechanics
 
         protected virtual void FixedUpdate()
         {
+            if (body == null) return;
             //if already falling, fall faster than the jump speed, otherwise use normal gravity.
             if (velocity.y < 0)
                 velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
@@ -127,6 +131,7 @@ namespace Platformer.Mechanics
 
         void PerformMovement(Vector2 move, bool yMovement)
         {
+            if (body == null) return;
             var distance = move.magnitude;
 
             if (distance > minMoveDistance)

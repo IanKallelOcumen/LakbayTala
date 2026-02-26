@@ -13,7 +13,7 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-
+            if (player == null) return;
         }
     }
 }

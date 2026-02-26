@@ -5,6 +5,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using Platformer.UI;
 using UnityEngine.InputSystem;
 using LakbayTala.Config;
 
@@ -42,7 +43,7 @@ namespace Platformer.Mechanics
         private float coyoteTimeLeft;
         private float jumpBufferLeft;
 
-        public Bounds Bounds => collider2d.bounds;
+        public Bounds Bounds => collider2d != null ? collider2d.bounds : default;
 
         void Awake()
         {
@@ -64,8 +65,9 @@ namespace Platformer.Mechanics
             }
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             if (MasterGameManager.Instance != null && MasterGameManager.Instance.Settings != null)
             {
                 GameSettings s = MasterGameManager.Instance.Settings;
@@ -76,11 +78,13 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
-            if (controlEnabled && m_MoveAction != null)
+            if (controlEnabled)
             {
-                move.x = m_MoveAction.ReadValue<Vector2>().x;
+                float keyboardMove = (m_MoveAction != null) ? m_MoveAction.ReadValue<Vector2>().x : 0f;
+                float virtualMove = VirtualInput.MoveDirection;
+                move.x = (Mathf.Abs(virtualMove) > 0.01f) ? virtualMove : keyboardMove;
 
-                bool jumpPressed = m_JumpAction != null && m_JumpAction.WasPressedThisFrame();
+                bool jumpPressed = (m_JumpAction != null && m_JumpAction.WasPressedThisFrame()) || VirtualInput.ConsumeJump();
                 if (jumpPressed)
                 {
                     if (jumpState == JumpState.Grounded || (jumpState == JumpState.InFlight && coyoteTimeLeft > 0f))
@@ -88,7 +92,7 @@ namespace Platformer.Mechanics
                     else if (!IsGrounded)
                         jumpBufferLeft = jumpBufferTime;
                 }
-                if (m_JumpAction != null && m_JumpAction.WasReleasedThisFrame())
+                if ((m_JumpAction != null && m_JumpAction.WasReleasedThisFrame()) || VirtualInput.ConsumeJumpRelease())
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
@@ -167,10 +171,13 @@ namespace Platformer.Mechanics
                 }
             }
 
-            if (move.x > 0.01f)
-                spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
-                spriteRenderer.flipX = true;
+            if (spriteRenderer != null)
+            {
+                if (move.x > 0.01f)
+                    spriteRenderer.flipX = false;
+                else if (move.x < -0.01f)
+                    spriteRenderer.flipX = true;
+            }
 
             if(animator != null) {
                 animator.SetBool("grounded", IsGrounded);

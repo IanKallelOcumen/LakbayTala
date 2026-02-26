@@ -28,8 +28,9 @@ namespace Platformer.Mechanics
         {
             //if tokens are empty, find all instances.
             //if tokens are not empty, they've been added at editor time.
-            if (tokens.Length == 0)
+            if (tokens == null || tokens.Length == 0)
                 FindAllTokensInScene();
+            if (tokens == null) return;
             //Register all tokens so they can work with this controller.
             for (var i = 0; i < tokens.Length; i++)
             {
@@ -48,7 +49,7 @@ namespace Platformer.Mechanics
                 {
                     var token = tokens[i];
                     //if token is null, it has been disabled and is no longer animated.
-                    if (token != null)
+                    if (token != null && token._renderer != null && token.sprites != null && token.sprites.Length > 0)
                     {
                         token._renderer.sprite = token.sprites[token.frame];
                         if (token.collected && token.frame == token.sprites.Length - 1)
