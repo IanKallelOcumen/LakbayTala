@@ -1,6 +1,5 @@
-# This .gitignore file should be placed at the root of your Unity project directory
-#
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
+# Unity project .gitignore — safe to clone on another PC; Unity will regenerate Library, Temp, etc.
+# Based on https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
 /[Ll]ibrary/
@@ -11,6 +10,15 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+
+# Local / OS files (differ per machine — don't commit)
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+*.lock
+error.txt
+sysinfo.txt
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -54,8 +62,7 @@ ExportedObj/
 *.pdb.meta
 *.mdb.meta
 
-# Unity3D generated file on crash reports
-sysinfo.txt
+# Unity crash reports (generated locally)
 
 # Builds
 *.apk
@@ -73,3 +80,6 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Figma token / secrets — never commit
+[Aa]ssets/Resources/config/figma_local.json

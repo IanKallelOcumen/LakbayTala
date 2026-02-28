@@ -28,12 +28,6 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
             }
         }
 
-        public bool IsAllSprites(SyncHelper[] btnChilds)
-        {
-            bool allSprites = btnChilds.Where(x => x.ContainsTag(FcuTag.Image)).Count(x => x.Data.IsSprite()) > 1;
-            return allSprites;
-        }
-
         public void SetupSelectable(SyncData btnSyncData, out SyncHelper[] btnChilds, out bool hasCustomButtonBackgrounds)
         {
             btnChilds = btnSyncData.GameObject.GetComponentsInChildren<SyncHelper>(true).Skip(1).ToArray();
@@ -64,7 +58,7 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
                 }
             }
 
-            bool allSprites = IsAllSprites(btnChilds);
+            bool allSprites = btnChilds.Where(x => x.ContainsTag(FcuTag.Image)).Count(x => x.Data.IsSprite()) > 1;
 
             if (monoBeh.IsUGUI())
             {

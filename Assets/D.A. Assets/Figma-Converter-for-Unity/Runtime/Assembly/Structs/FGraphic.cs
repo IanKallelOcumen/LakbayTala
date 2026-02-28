@@ -14,12 +14,6 @@ namespace DA_Assets.FCU
         [SerializeField] bool hasStroke;
         public bool HasStroke { get => hasStroke; set => hasStroke = value; }
 
-        [SerializeField] bool hasSingleColor;
-        public bool HasSingleColor { get => hasSingleColor; set => hasSingleColor = value; }
-
-        [SerializeField] bool hasSingleGradient;
-        public bool HasSingleGradient { get => hasSingleGradient; set => hasSingleGradient = value; }
-
         [SerializeField] FFill fill;
         public FFill Fill { get => fill; set => fill = value; }
 

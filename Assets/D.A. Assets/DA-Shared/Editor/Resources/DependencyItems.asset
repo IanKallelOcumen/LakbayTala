@@ -16,7 +16,7 @@ MonoBehaviour:
   - Name: Figma Converter for Unity
     Type: DA_Assets.FCU.SyncHelper, DA_Assets.FCU
     ScriptingDefineName: FCU_EXISTS
-  - Name: Newtonsoft.Json
+  - Name: Json.NET
     Type: Newtonsoft.Json.JsonConvert, Newtonsoft.Json
     ScriptingDefineName: JSONNET_EXISTS
   - Name: TextMeshPro

@@ -59,11 +59,6 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
                     monoBeh.SyncHelpers.SetFcuToAllChilds(syncHelper.gameObject, ref counter);
 
                     SetFigmaIds(fobject, syncHelper);
-                    if (fobject.ContainsTag(FcuTag.Frame))
-                    {
-                        syncHelper.transform.SetParent(monoBeh.transform, false);
-                    }
-                    continue;
                 }
                 else
                 {
@@ -76,19 +71,14 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
 
                 if (!alreadyExists)
                 {
-                    monoBeh.Events.OnObjectInstantiate?.Invoke(monoBeh, fobject);
+                    monoBeh.Events.OnObjectInstantiate?.Invoke(monoBeh, fobject.Data.GameObject);
                 }
 
                 if (monoBeh.IsUGUI())
                 {
                     fobject.Data.GameObject.TryAddComponent(out RectTransform _);
                 }
-#if UNITY_EDITOR
-                if (!UnityEditor.PrefabUtility.IsPartOfPrefabInstance(fobject.Data.GameObject))
-#endif
-                {
-                    fobject.Data.GameObject.transform.SetParent(_tempFrames.transform);
-                }
+                fobject.Data.GameObject.transform.SetParent(_tempFrames.transform);
 
                 AddRectGameObject(fobject);
 

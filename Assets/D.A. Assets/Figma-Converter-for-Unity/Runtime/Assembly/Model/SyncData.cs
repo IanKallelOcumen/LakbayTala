@@ -155,8 +155,8 @@ namespace DA_Assets.FCU.Model
         [SerializeField, Clear] string link;
         public string Link { get => link; set => link = value; }
 
-        [SerializeField] List<string> tagReasons = new List<string>();
-        public List<string> TagReasons { get => tagReasons; set => tagReasons = value; }
+        [SerializeField, Clear] string tagReason;
+        public string TagReason { get => tagReason; set => tagReason = value; }
 
         [SerializeField, Clear] string downloadableReason;
         public string DownloadableReason { get => downloadableReason; set => downloadableReason = value; }
@@ -167,31 +167,31 @@ namespace DA_Assets.FCU.Model
         [SerializeField, Clear] int downloadAttempsCount;
         public int DownloadAttempsCount { get => downloadAttempsCount; set => downloadAttempsCount = value; }
 
-        [SerializeField] bool isDuplicate;
+        [SerializeField, Clear] bool isDuplicate;
         public bool IsDuplicate { get => isDuplicate; set => isDuplicate = value; }
 
-        [SerializeField] bool isMutual;
+        [SerializeField, Clear] bool isMutual;
         public bool IsMutual { get => isMutual; set => isMutual = value; }
 
-        [SerializeField] bool isEmpty;
+        [SerializeField, Clear] bool isEmpty;
         public bool IsEmpty { get => isEmpty; set => isEmpty = value; }
 
-        [SerializeField] bool needDownload;
+        [SerializeField, Clear] bool needDownload;
         public bool NeedDownload { get => needDownload; set => needDownload = value; }
 
         [SerializeField, Clear] bool needGenerate;
         public bool NeedGenerate { get => needGenerate; set => needGenerate = value; }
 
-        [SerializeField] bool forceImage;
+        [SerializeField, Clear] bool forceImage;
         public bool ForceImage { get => forceImage; set => forceImage = value; }
 
-        [SerializeField] bool isOverlappedByStroke;
+        [SerializeField, Clear] bool isOverlappedByStroke;
         public bool IsOverlappedByStroke { get => isOverlappedByStroke; set => isOverlappedByStroke = value; }
 
-        [SerializeField] bool forceContainer;
+        [SerializeField, Clear] bool forceContainer;
         public bool ForceContainer { get => forceContainer; set => forceContainer = value; }
 
-        [SerializeField] bool isInsideDownloadable;
+        [SerializeField, Clear] bool isInsideDownloadable;
         public bool InsideDownloadable { get => isInsideDownloadable; set => isInsideDownloadable = value; }
 
         [SerializeField, Clear] bool hasFontAsset;
@@ -212,9 +212,6 @@ namespace DA_Assets.FCU.Model
         public Transform ParentTransform { get => parentTransform; set => parentTransform = value; }
         public int HierarchyLevel { get; set; }
         public int SiblingIndex { get; set; }
-
-        [SerializeField] bool partOfPrefab;
-        public bool PartOfPrefab { get => partOfPrefab; set => partOfPrefab = value; }
     }
 
     [Serializable]

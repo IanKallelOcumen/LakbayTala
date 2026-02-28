@@ -73,9 +73,11 @@ You can disable these options, but these components may not display correctly in
             }
         }
 
-        [SerializeField] SpriteDownloadOptions downloadOptions = SpriteDownloadOptions.UnsupportedGradients | SpriteDownloadOptions.MultipleFills;
-        [SerializeProperty(nameof(downloadOptions))]
-        public SpriteDownloadOptions DownloadOptions { get => downloadOptions; set => SetValue(ref downloadOptions, value); }
+        [SerializeField] bool downloadMultipleFills = true;
+        public bool DownloadMultipleFills { get => downloadMultipleFills; set => SetValue(ref downloadMultipleFills, value); }
+
+        [SerializeField] bool downloadUnsupportedGradients = true;
+        public bool DownloadUnsupportedGradients { get => downloadUnsupportedGradients; set => SetValue(ref downloadUnsupportedGradients, value); }
 
         [SerializeField] bool redownloadSprites = false;
         public bool RedownloadSprites { get => redownloadSprites; set => SetValue(ref redownloadSprites, value); }
@@ -192,14 +194,5 @@ You can disable these options, but these components may not display correctly in
         [FcuInspectorProperty(ComponentType.EnumField, FcuLocKey.label_sprite_import_mode, FcuLocKey.tooltip_sprite_import_mode)]
         public UnityEditor.SpriteImportMode SpriteImportMode { get => spriteImportMode; set => SetValue(ref spriteImportMode, value); }
 #endif
-    }
-
-    [System.Flags]
-    public enum SpriteDownloadOptions
-    {
-        None = 0,
-        MultipleFills = 1 << 0,
-        SupportedGradients = 1 << 1,
-        UnsupportedGradients = 1 << 2
     }
 }

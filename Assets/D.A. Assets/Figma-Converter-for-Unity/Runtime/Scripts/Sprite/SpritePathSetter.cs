@@ -47,7 +47,7 @@ namespace DA_Assets.FCU
                 SetNeedDownloadFileFlag(item, imageFileExists);
                 SetNeedGenerateFlag(item, imageFileExists);
 
-                foreach (FObject fobject in canHasFile)
+                foreach (FObject fobject in fobjects)
                 {
                     if (fobject.Data.Hash == item.Data.Hash)
                     {

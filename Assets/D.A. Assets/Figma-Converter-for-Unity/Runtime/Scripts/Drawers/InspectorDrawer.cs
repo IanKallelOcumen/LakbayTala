@@ -52,7 +52,7 @@ namespace DA_Assets.FCU.Drawers
 
                 if (!isAllowed)
                     continue;
-
+               
                 SelectableFObject childItem = new SelectableFObject();
                 FillNewSelectableItemRecursively(childItem, child, currentDepth + 1, maxDepth);
                 parentItem.Childs.Add(childItem);
@@ -61,9 +61,9 @@ namespace DA_Assets.FCU.Drawers
 
         private bool IsAllowed(FObject fobject, FObject parent)
         {
-            monoBeh.TagSetter.TryGetManualTags(fobject, out List<FcuTag> manualTags);
+            monoBeh.TagSetter.GetManualTag(fobject, out FcuTag manualTag);
 
-            if (manualTags.Contains(FcuTag.Ignore))
+            if (manualTag == FcuTag.Ignore)
             {
                 return false;
             }

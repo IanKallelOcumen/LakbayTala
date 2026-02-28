@@ -1,6 +1,5 @@
 ﻿using DA_Assets.DAI;
 using DA_Assets.FCU.Extensions;
-using UnityEngine;
 
 namespace DA_Assets.FCU
 {
@@ -14,9 +13,6 @@ namespace DA_Assets.FCU
             gui.DrawObjectFields(monoBeh.Settings.ButtonSettings);
 
             gui.DrawObjectFields(monoBeh.Settings.ButtonSettings.UnityButtonSettings);
-
-            monoBeh.Settings.ButtonSettings.TransitionType = gui.EnumField(new GUIContent(FcuLocKey.label_transition_type.Localize(), FcuLocKey.tooltip_transition_type.Localize()),
-                monoBeh.Settings.ButtonSettings.TransitionType);
 
 #if DABUTTON_EXISTS
             if (monoBeh.UsingDAButton())

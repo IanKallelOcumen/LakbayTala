@@ -19,27 +19,28 @@ namespace DA_Assets.FCU
             FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
             PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-#if JSONNET_EXISTS
             foreach (var field in fields)
             {
-
+#if JSONNET_EXISTS
                 JsonPropertyAttribute attribute = field.GetCustomAttribute<JsonPropertyAttribute>();
                 if (attribute != null)
                 {
                     propertyNames.Add(attribute.PropertyName ?? field.Name);
                 }
+#endif
             }
 
             foreach (var property in properties)
             {
+#if JSONNET_EXISTS
                 JsonPropertyAttribute attribute = property.GetCustomAttribute<JsonPropertyAttribute>();
                 if (attribute != null)
                 {
                     propertyNames.Add(attribute.PropertyName ?? property.Name);
                 }
-
-            }
 #endif
+            }
+
             return propertyNames;
         }
 

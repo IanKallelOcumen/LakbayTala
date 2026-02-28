@@ -462,7 +462,7 @@ namespace DA_Assets.FCU
                 return;
             }
 
-            transform.SetParent(parent, false);
+            transform.SetParent(parent);
         }
     }
 }

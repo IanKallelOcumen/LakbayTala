@@ -7,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -224,25 +223,22 @@ namespace DA_Assets.FCU
 
             monoBeh.NameSetter.SetNames(child);
 
-            if (TryGetManualTags(child, out List<FcuTag> manualTags))
+            if (GetManualTag(child, out FcuTag manualTag))
             {
-                for (int i = 0; i < manualTags.Count; i++)
-                {
-                    child.AddTag(manualTags[i]);
-                    FcuLogger.Debug($"GetManualTag {i} | {child.Name} | {manualTags[i]}", FcuDebugSettingsFlags.LogSetTag);
-                }
+                child.AddTag(manualTag);
+                FcuLogger.Debug($"GetManualTag | {child.Name} | {manualTag}", FcuDebugSettingsFlags.LogSetTag);
 
-                if (manualTags.Contains(FcuTag.Ignore))
-                {
-                    child.Data.IsEmpty = true;
-                }
-                else if (manualTags.Contains(FcuTag.Image))
+                if (manualTag == FcuTag.Image)
                 {
                     child.Data.ForceImage = true;
                 }
-                else if (manualTags.Contains(FcuTag.Container))
+                else if (manualTag == FcuTag.Container)
                 {
                     child.Data.ForceContainer = true;
+                }
+                else if (manualTag == FcuTag.Ignore)
+                {
+                    child.Data.IsEmpty = true;
                 }
             }
 
@@ -294,7 +290,7 @@ namespace DA_Assets.FCU
 
                 if (child.Style.IsDefault() == false)
                 {
-                    if (child.Style.TextAutoResize == TextAutoResize.WIDTH_AND_HEIGHT || child.Style.TextAutoResize == TextAutoResize.HEIGHT)
+                    if (child.Style.TextAutoResize == "WIDTH_AND_HEIGHT")
                     {
                         child.AddTag(FcuTag.ContentSizeFitter);
                     }
@@ -383,8 +379,8 @@ namespace DA_Assets.FCU
             //TODO: check this.
             if (child.Data.IsEmpty && !isInputFieldTextComponents)
             {
-                child.Data.TagReasons.Add(nameof(child.Data.IsEmpty));
-                FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                child.Data.TagReason = nameof(child.Data.IsEmpty);
+                FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                 return true;
             }
 
@@ -392,8 +388,8 @@ namespace DA_Assets.FCU
             {
                 ///If a component is tagged with the 'img' tag, it will downloaded as a single image,
                 ///which means there is no need to look for child components for it.
-                child.Data.TagReasons.Add(nameof(child.Data.ForceImage));
-                FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                child.Data.TagReason = nameof(child.Data.ForceImage);
+                FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                 return true;
             }
 
@@ -405,31 +401,14 @@ namespace DA_Assets.FCU
                 child.AddTag(FcuTag.Image);
                 child.Data.ForceImage = true;
 
-                child.Data.TagReasons.Add(nameof(TagExtensions.IsRootSprite));
-                FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                child.Data.TagReason = nameof(TagExtensions.IsRootSprite);
+                FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                 return true;
             }
 
             if (monoBeh.Settings.MainSettings.RawImport == false)
             {
                 bool hasButtonTags = child.ContainsCustomButtonTags();
-
-                if (hasButtonTags)
-                {
-                    if (child.ContainsTag(FcuTag.Image))
-                    {
-                        if ((child.IsDownloadableType() || child.IsGenerativeType()) == false)
-                        {
-                            if (monoBeh.Settings.ButtonSettings.TransitionType == ButtonTransitionType.SpriteSwapForAll)
-                            {
-                                child.Data.ForceImage = true;
-                                child.Data.TagReasons.Add(nameof(ButtonTransitionType.SpriteSwapForAll));
-                                return true;
-                            }
-                        }
-                    }
-                }
-
                 bool hasIcon = ContainsIcon(child);
                 bool singleImage = CanBeSingleImage(child);
                 FcuLogger.Debug($"{methodPath} | singleImage: {singleImage} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
@@ -438,8 +417,8 @@ namespace DA_Assets.FCU
                     child.Data.ForceContainer = true;
                     child.AddTag(FcuTag.Container);
 
-                    child.Data.TagReasons.Add(nameof(ContainsIcon));
-                    FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                    child.Data.TagReason = nameof(ContainsIcon);
+                    FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                 }
                 else if (singleImage && hasButtonTags)
                 {
@@ -447,8 +426,8 @@ namespace DA_Assets.FCU
                     child.AddTag(FcuTag.Image);
                     child.RemoveNotDownloadableTags();
 
-                    child.Data.TagReasons.Add(nameof(TagExtensions.ContainsCustomButtonTags));
-                    FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                    child.Data.TagReason = nameof(TagExtensions.ContainsCustomButtonTags);
+                    FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                     return true;
                 }
                 else if (singleImage)
@@ -459,8 +438,8 @@ namespace DA_Assets.FCU
                     child.AddTag(FcuTag.Image);
                     child.RemoveNotDownloadableTags();
 
-                    child.Data.TagReasons.Add(nameof(singleImage));
-                    FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                    child.Data.TagReason = "SingleImage";
+                    FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                     return true;
                 }
                 else if (child.Type == NodeType.BOOLEAN_OPERATION)
@@ -468,7 +447,7 @@ namespace DA_Assets.FCU
                     child.Data.ForceImage = true;
                     child.AddTag(FcuTag.Image);
 
-                    child.Data.TagReasons.Add(nameof(NodeType.BOOLEAN_OPERATION));
+                    child.Data.TagReason = "BOOLEAN_OPERATION";
                     return true;
                 }
                 else
@@ -479,8 +458,8 @@ namespace DA_Assets.FCU
 
             if (child.HasVisibleProperty(x => x.Children))
             {
-                child.Data.TagReasons.Add("children not empty");
-                FcuLogger.Debug($"{methodPath} | {child.Data.TagReasons} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
+                child.Data.TagReason = "children not empty";
+                FcuLogger.Debug($"{methodPath} | {child.Data.TagReason} | {child.Data.NameHierarchy}", FcuDebugSettingsFlags.LogSetTag);
                 child.AddTag(FcuTag.Container);
             }
 
@@ -603,15 +582,11 @@ namespace DA_Assets.FCU
             }
         }
 
-        /// <summary>
-        /// Повертає true, якщо хоч один тег знайдено.
-        /// </summary>
-        internal bool TryGetManualTags(FObject fobject, out List<FcuTag> tags)
+        internal bool GetManualTag(FObject fobject, out FcuTag manualTag)
         {
-            tags = new List<FcuTag>();
-
             if (fobject.Name.Contains(FcuConfig.RealTagSeparator) == false)
             {
+                manualTag = FcuTag.None;
                 return false;
             }
 
@@ -621,22 +596,26 @@ namespace DA_Assets.FCU
 
             foreach (FcuTag fcuTag in fcuTags)
             {
-                string[] tagParts = GetTagParts(fobject.Name);
+                bool tagFind = FindManualTag(fobject.Name, fcuTag);
 
-                foreach (var tagPart in tagParts)
+                if (tagFind)
                 {
-                    if (FindManualTag(tagPart, fcuTag))
-                    {
-                        tags.Add(fcuTag);
-                    }
+                    manualTag = fcuTag;
+                    return true;
                 }
             }
 
-            return tags.Count > 0;
+            manualTag = FcuTag.None;
+            return false;
         }
 
-        private string[] GetTagParts(string name)
+        private bool FindManualTag(string name, FcuTag fcuTag)
         {
+            string figmaTag = fcuTag.GetTagConfig().FigmaTag.ToLower();
+
+            if (figmaTag.IsEmpty())
+                return false;
+
             string tempName = name.ToLower().Replace(" ", "");
 
             string[] nameParts = tempName.Split(FcuConfig.RealTagSeparator);
@@ -644,26 +623,13 @@ namespace DA_Assets.FCU
             if (nameParts.Length > 0)
             {
                 string tagPart = nameParts[0];
-                string[] tagParts = tagPart.Split(",");
-                return tagParts;
-            }
+                string cleaned = Regex.Replace(tagPart, "[^a-z]", "");
 
-            return new string[] { };
-        }
-
-        private bool FindManualTag(string tagPart, FcuTag fcuTag)
-        {
-            string figmaTag = fcuTag.GetTagConfig().FigmaTag.ToLower();
-
-            if (figmaTag.IsEmpty())
-                return false;
-
-            string cleaned = Regex.Replace(tagPart, "[^a-z]", "");
-
-            if (cleaned == figmaTag)
-            {
-                FcuLogger.Debug($"{nameof(FindManualTag)} | tagPart: {cleaned} | tag: {figmaTag}", FcuDebugSettingsFlags.LogSetTag);
-                return true;
+                if (cleaned == figmaTag)
+                {
+                    FcuLogger.Debug($"CheckForTag | GetFigmaType | {name} | tag: {figmaTag}", FcuDebugSettingsFlags.LogSetTag);
+                    return true;
+                }
             }
 
             return false;

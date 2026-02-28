@@ -206,13 +206,6 @@ namespace DA_Assets.FCU
 
                     UpdateChecker.DrawDeveloperMessages(AssetType.fcu, FcuConfig.Instance.ProductVersion);
 
-                    if (!monoBeh.IsJsonNetExists())
-                    {
-                        EditorGUILayout.HelpBox(@$"Newtonsoft.Json, which is required for the asset to function, is not installed.
-Please read the PDF manual included with the asset to resolve this issue.", MessageType.Error);
-                        EditorGUILayout.Space(5);
-                    }
-
                     if (monoBeh.AssetTools.NeedShowRateMe)
                     {
                         RateMeUI();
@@ -364,10 +357,10 @@ Please read the PDF manual included with the asset to resolve this issue.", Mess
         }
 
         internal DifferenceCheckerWindow DifferenceCheckerWindow =>
-            DifferenceCheckerWindow.GetInstance(this, monoBeh, new Vector2(900, 600), false, title: "Layout Update Manager (beta)");
+            DifferenceCheckerWindow.GetInstance(this, monoBeh, new Vector2(900, 600), false);
 
         internal FcuSettingsWindow SettingsWindow =>
-            FcuSettingsWindow.GetInstance(this, monoBeh, new Vector2(800, 600), false, title: "Settings");
+            FcuSettingsWindow.GetInstance(this, monoBeh, new Vector2(800, 600), false);
 
         private HeaderSection _headerSection;
         internal HeaderSection Header => monoBeh.Link(ref _headerSection, this);

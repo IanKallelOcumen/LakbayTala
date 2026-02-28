@@ -6,52 +6,30 @@ using Newtonsoft.Json;
 using LakbayTala.Leaderboard;
 
 /// <summary>
-/// Comprehensive unit tests for LakbayTala leaderboard system.
-/// Tests cover data models, service functionality, UI components, and performance.
+/// Unit tests for LakbayTala leaderboard system (data models and LeaderboardService).
+/// UI component tests removed — UI folder was removed; build your own UI and test manually.
 /// </summary>
 public class LeaderboardTests
 {
     private LeaderboardService leaderboardService;
-    private LakbayTalaLeaderboardUIController uiController;
-    private LeaderboardEntryUI entryUI;
-    private UserProfileModalController profileModal;
 
     [SetUp]
     public void Setup()
     {
-        // Create test GameObjects
         var serviceGO = new GameObject("LeaderboardService");
-        var uiGO = new GameObject("LeaderboardUI");
-        var entryGO = new GameObject("LeaderboardEntry");
-        var modalGO = new GameObject("UserProfileModal");
-
-        // Add components
         leaderboardService = serviceGO.AddComponent<LeaderboardService>();
-        uiController = uiGO.AddComponent<LakbayTalaLeaderboardUIController>();
-        entryUI = entryGO.AddComponent<LeaderboardEntryUI>();
-        profileModal = modalGO.AddComponent<UserProfileModalController>();
-
-        // Configure test environment
         SetupTestEnvironment();
     }
 
     [TearDown]
     public void TearDown()
     {
-        // Clean up test objects
         if (leaderboardService != null)
             GameObject.DestroyImmediate(leaderboardService.gameObject);
-        if (uiController != null)
-            GameObject.DestroyImmediate(uiController.gameObject);
-        if (entryUI != null)
-            GameObject.DestroyImmediate(entryUI.gameObject);
-        if (profileModal != null)
-            GameObject.DestroyImmediate(profileModal.gameObject);
     }
 
     private void SetupTestEnvironment()
     {
-        // Configure leaderboard service
         leaderboardService.config = new LeaderboardConfig
         {
             pageSize = 10,
@@ -67,47 +45,9 @@ public class LeaderboardTests
             enablePagination = true,
             enableUserProfiles = true
         };
-
         leaderboardService.firebaseDatabaseUrl = "https://test-firebase-url.firebaseio.com";
         leaderboardService.enableLogging = true;
         leaderboardService.enableOfflineMode = true;
-
-        // Initialize UI components
-        SetupUIComponents();
-    }
-
-    private void SetupUIComponents()
-    {
-        // Setup UI controller references
-        uiController.leaderboardContainer = new GameObject("Container").transform;
-        uiController.leaderboardEntryPrefab = new GameObject("EntryPrefab");
-        uiController.userProfileModal = new GameObject("ProfileModal");
-        uiController.loadingPanel = new GameObject("LoadingPanel");
-        uiController.errorPanel = new GameObject("ErrorPanel");
-        uiController.emptyStatePanel = new GameObject("EmptyStatePanel");
-
-        // Setup entry UI references
-        var rankTextGO = new GameObject("RankText");
-        entryUI.rankText = rankTextGO.AddComponent<UnityEngine.UI.Text>();
-        entryUI.rankText.text = "#1";
-
-        var usernameTextGO = new GameObject("UsernameText");
-        entryUI.usernameText = usernameTextGO.AddComponent<UnityEngine.UI.Text>();
-        entryUI.usernameText.text = "TestUser";
-
-        var scoreTextGO = new GameObject("ScoreText");
-        entryUI.scoreText = scoreTextGO.AddComponent<UnityEngine.UI.Text>();
-        entryUI.scoreText.text = "1000";
-
-        // Setup profile modal references
-        var avatarImageGO = new GameObject("AvatarImage");
-        profileModal.avatarImage = avatarImageGO.AddComponent<UnityEngine.UI.Image>();
-
-        var usernameTextGO2 = new GameObject("UsernameText");
-        profileModal.usernameText = usernameTextGO2.AddComponent<UnityEngine.UI.Text>();
-
-        var displayNameTextGO = new GameObject("DisplayNameText");
-        profileModal.displayNameText = displayNameTextGO.AddComponent<UnityEngine.UI.Text>();
     }
 
     #region Data Model Tests
@@ -365,62 +305,30 @@ public class LeaderboardTests
 
     #endregion
 
-    #region UI Controller Tests
+    #region UI Controller Tests (ignored - UI components removed)
 
-    [Test]
+    [Test, Ignore("UI components removed - build your own UI")]
     public void LeaderboardUIController_Initialization_SetsUpCorrectly()
     {
-        System.Threading.Thread.Sleep(100); // Small delay
-
-        Assert.IsNotNull(uiController);
-        Assert.IsNotNull(uiController.leaderboardContainer);
-        Assert.IsNotNull(uiController.leaderboardEntryPrefab);
-        Assert.IsTrue(uiController.enableVirtualScrolling);
-        Assert.AreEqual(25, uiController.itemsPerPage);
+        Assert.Pass("UI removed");
     }
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardUIController_SearchDebounce_WorksCorrectly()
     {
-        string searchTerm = "test search";
-        
-        // Simulate search input
-        uiController.OnSearchInputChanged(searchTerm);
-        
-        // Should not immediately trigger search due to debouncing
-        Assert.Pass("Search debounce working");
+        Assert.Pass("UI removed");
     }
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardUIController_SortCriteria_UpdatesCorrectly()
     {
-        var initialSort = uiController.currentSort;
-        
-        // Simulate sort change
-        uiController.SetSortCriteria(SortCriteria.Name);
-        
-        Assert.AreNotEqual(initialSort, uiController.currentSort);
+        Assert.Pass("UI removed");
     }
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardUIController_RefreshLeaderboard_UpdatesData()
     {
-        bool refreshComplete = false;
-        
-        // Setup completion callback
-        SimulateRefresh(() =>
-        {
-            refreshComplete = true;
-        });
-
-        float timeout = 5f;
-        var startTime = DateTime.Now;
-        while (!refreshComplete && (DateTime.Now - startTime).TotalSeconds < timeout)
-        {
-            System.Threading.Thread.Sleep(100); // Wait 100ms
-        }
-
-        Assert.IsTrue(refreshComplete);
+        Assert.Pass("UI removed");
     }
 
     private void SimulateRefresh(Action callback)
@@ -432,39 +340,12 @@ public class LeaderboardTests
 
     #endregion
 
-    #region Entry UI Tests
+    #region Entry UI Tests (ignored - UI components removed)
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardEntryUI_SetupEnhancedEntry_ConfiguresCorrectly()
     {
-        var entry = new LeaderboardEntry
-        {
-            user = new LeaderboardUser
-            {
-                userId = "test_user",
-                username = "TestUser",
-                displayName = "Test User",
-                totalScore = 1000,
-                currentRank = 1,
-                culturalLevel = "Novice",
-                country = "Philippines",
-                isOnline = true
-            },
-            rank = 1,
-            score = 1000,
-            isCurrentUser = false
-        };
-
-        string creatureName = "Diwata";
-        Color creatureColor = Color.yellow;
-        string creatureDescription = "A divine fairy";
-        string baybayinName = "ᜇᜒᜏᜆ";
-
-        entryUI.SetupEnhancedEntry(entry, 1, creatureName, creatureColor, creatureDescription, baybayinName);
-
-        Assert.AreEqual("#1", entryUI.rankText.text);
-        Assert.AreEqual("TestUser", entryUI.usernameText.text);
-        Assert.AreEqual("1000", entryUI.scoreText.text);
+        Assert.Pass("UI removed");
     }
 
     [Test]
@@ -484,104 +365,26 @@ public class LeaderboardTests
         Assert.IsTrue(entry.user.HasRankImproved());
     }
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardEntryUI_Animation_CompletesSuccessfully()
     {
-        var entry = new LeaderboardEntry
-        {
-            user = new LeaderboardUser
-            {
-                userId = "anim_test_user",
-                username = "AnimUser",
-                totalScore = 2000,
-                currentRank = 2
-            },
-            rank = 2,
-            score = 2000
-        };
-
-        entryUI.SetupEnhancedEntry(entry, 2, "Tikbalang", Color.red, "Horse demon", "ᜆᜒᜃ᜔ᜊᜎᜅ᜔");
-
-        // Wait for animation to complete
-        System.Threading.Thread.Sleep(1000); // Wait 1 second
-
-        Assert.Pass("Animation completed");
+        Assert.Pass("UI removed");
     }
 
     #endregion
 
-    #region Profile Modal Tests
+    #region Profile Modal Tests (ignored - UI components removed)
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void UserProfileModal_ShowProfile_DisplaysCorrectly()
     {
-        var user = new LeaderboardUser
-        {
-            userId = "profile_test_user",
-            username = "ProfileUser",
-            displayName = "Profile User",
-            totalScore = 5000,
-            currentRank = 5,
-            culturalLevel = "Explorer",
-            country = "Philippines",
-            isOnline = true,
-            profile = new UserProfile
-            {
-                bio = "Test bio",
-                gamesPlayed = 50,
-                totalPlayTime = 3000,
-                joinedDate = DateTime.Now.AddDays(-30),
-                favoriteCreature = "Kapre"
-            }
-        };
-
-        bool profileShown = false;
-        profileModal.OnProfileLoaded += (loadedUser) =>
-        {
-            profileShown = true;
-        };
-
-        profileModal.ShowProfile(user);
-
-        float timeout = 3f;
-        var startTime = DateTime.Now;
-        while (!profileShown && (DateTime.Now - startTime).TotalSeconds < timeout)
-        {
-            System.Threading.Thread.Sleep(100); // Wait 100ms
-        }
-
-        Assert.IsTrue(profileShown);
-        Assert.AreEqual(user.username, profileModal.usernameText.text);
+        Assert.Pass("UI removed");
     }
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void UserProfileModal_CloseProfile_HidesCorrectly()
     {
-        var user = new LeaderboardUser
-        {
-            userId = "close_test_user",
-            username = "CloseUser"
-        };
-
-        profileModal.ShowProfile(user);
-        System.Threading.Thread.Sleep(500); // Wait 0.5 seconds
-
-        bool modalClosed = false;
-        profileModal.OnProfileClosed += () =>
-        {
-            modalClosed = true;
-        };
-
-        profileModal.CloseProfile();
-
-        float timeout = 2f;
-        var startTime = DateTime.Now;
-        while (!modalClosed && (DateTime.Now - startTime).TotalSeconds < timeout)
-        {
-            System.Threading.Thread.Sleep(100); // Wait 100ms
-        }
-
-        Assert.IsTrue(modalClosed);
+        Assert.Pass("UI removed");
     }
 
     #endregion
@@ -660,79 +463,26 @@ public class LeaderboardTests
 
     #region Cultural Integration Tests
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardEntryUI_CulturalTheming_AppliesCorrectly()
     {
-        var entry = new LeaderboardEntry
-        {
-            user = new LeaderboardUser
-            {
-                userId = "cultural_test",
-                username = "CulturalUser",
-                culturalLevel = "Master"
-            },
-            rank = 1
-        };
-
-        string creatureName = "Bathala";
-        Color creatureColor = Color.gold;
-
-        entryUI.SetupEnhancedEntry(entry, 1, creatureName, creatureColor, "Supreme deity", "ᜊᜆ᜔ᜑᜎ");
-
-        Assert.AreEqual(creatureName, entryUI.creatureNameText?.text);
-        Assert.AreEqual(creatureColor, entryUI.creatureNameText?.color);
+        Assert.Pass("UI removed");
     }
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void UserProfileModal_CulturalInformation_DisplaysCorrectly()
     {
-        var user = new LeaderboardUser
-        {
-            userId = "cultural_profile_test",
-            username = "CulturalProfile",
-            profile = new UserProfile
-            {
-                favoriteCreature = "Aswang",
-                culturalKnowledge = new Dictionary<string, int>
-                {
-                    { "Baybayin", 100 },
-                    { "Mythology", 80 },
-                    { "History", 60 }
-                }
-            }
-        };
-
-        profileModal.ShowProfile(user);
-
-        // Verify cultural information is processed
-        Assert.Pass("Cultural profile data processed");
+        Assert.Pass("UI removed");
     }
 
     #endregion
 
     #region Accessibility Tests
 
-    [Test]
+    [Test, Ignore("UI components removed")]
     public void LeaderboardEntryUI_AccessibilityFeatures_EnabledCorrectly()
     {
-        entryUI.enableAccessibilityFeatures = true;
-        entryUI.enableScreenReaderSupport = true;
-        entryUI.isHighContrast = true;
-        entryUI.isLargeText = true;
-
-        var entry = new LeaderboardEntry
-        {
-            user = new LeaderboardUser { username = "AccessibleUser" },
-            rank = 1,
-            score = 1000
-        };
-
-        entryUI.SetupEnhancedEntry(entry, 1, "Accessible", Color.blue, "Accessible creature", "ᜀᜃ᜔ᜐᜒᜐᜒᜊ᜔ᜎ᜔");
-
-        Assert.IsTrue(entryUI.enableAccessibilityFeatures);
-        Assert.IsTrue(entryUI.enableScreenReaderSupport);
-        Assert.IsTrue(entryUI.isHighContrast);
-        Assert.IsTrue(entryUI.isLargeText);
+        Assert.Pass("UI removed");
     }
 
     #endregion

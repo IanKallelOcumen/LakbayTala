@@ -53,29 +53,6 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
             {
                 layoutGroup.childForceExpandHeight = false;
             }
-
-            // Add and configure ContentSizeFitter
-            fobject.Data.GameObject.TryAddComponent(out ContentSizeFitter csf);
-
-            if (fobject.PrimaryAxisSizingMode == PrimaryAxisSizingMode.AUTO || 
-                fobject.PrimaryAxisSizingMode == PrimaryAxisSizingMode.NONE)
-            {
-                csf.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            }
-            else
-            {
-                csf.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-            }
-
-            if (fobject.CounterAxisSizingMode == CounterAxisSizingMode.AUTO || 
-                fobject.CounterAxisSizingMode == CounterAxisSizingMode.NONE)
-            {
-                csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            }
-            else
-            {
-                csf.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
-            }
         }
     }
 }

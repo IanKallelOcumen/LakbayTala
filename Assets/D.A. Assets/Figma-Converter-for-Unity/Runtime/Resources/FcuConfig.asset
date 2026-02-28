@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471efbc970a337c4c83b1330ba757435, type: 3}
   m_Name: FcuConfig
   m_EditorClassIdentifier: 
-  productVersion: 5.7.1
+  productVersion: 5.5.2
   localizator:
     locFile: {fileID: 4900000, guid: 76e267d64912f5c44a25b64a5d86254b, type: 3}
   tags:

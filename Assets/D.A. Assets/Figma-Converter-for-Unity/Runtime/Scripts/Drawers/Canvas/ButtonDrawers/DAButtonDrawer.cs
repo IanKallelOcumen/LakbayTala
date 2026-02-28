@@ -1,5 +1,4 @@
 ﻿#if DABUTTON_EXISTS
-using DA_Assets.DAB;
 using DA_Assets.DAI;
 using DA_Assets.Extensions;
 using DA_Assets.FCU.Extensions;
@@ -9,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using DA_Assets.DAB;
+using System.Text.RegularExpressions;
 
 namespace DA_Assets.FCU.Drawers.CanvasDrawers
 {
@@ -26,7 +27,7 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
 
             daButton.TargetGraphics.Clear();
 
-            bool allSprites = monoBeh.CanvasDrawer.ButtonDrawer.UnityButtonDrawer.IsAllSprites(btnChilds);
+            bool allSprites = btnChilds.Where(x => x.ContainsTag(FcuTag.Image)).Count(x => x.Data.IsSprite()) > 1;
 
             var groups = btnChilds.GroupBy(helper => ExtractGroupKey(helper.gameObject.name));
 
@@ -114,22 +115,23 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
             if (string.IsNullOrWhiteSpace(fullName))
                 return "no-digit";
 
-            // Take everything before the first dash
+            // Беремо все, що до першого дефіса
             string firstPart = fullName.Split('-')[0].Trim();
 
-            // Look for the first digit sequence
+            // Шукаємо першу послідовність цифр
             var match = System.Text.RegularExpressions.Regex.Match(firstPart, @"\d+");
             if (match.Success)
             {
-                // If digits are found, return them as the group key
+                // Якщо знайдено цифри, повертаємо їх як ключ групи
                 return match.Value;
             }
             else
             {
-                // If no digits, group everything here
+                // Якщо немає цифр, групуємо все сюди
                 return "no-digit";
             }
         }
+
     }
 }
 #endif

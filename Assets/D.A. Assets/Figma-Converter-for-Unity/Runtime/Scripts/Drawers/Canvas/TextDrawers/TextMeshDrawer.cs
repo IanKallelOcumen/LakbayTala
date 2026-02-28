@@ -220,7 +220,7 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
         {
             TextOverflowModes textTurncate = monoBeh.Settings.TextMeshSettings.Overflow;
 
-            if (fobject.Style.TextAutoResize == TextAutoResize.NONE || fobject.Style.TextAutoResize == TextAutoResize.TRUNCATE)
+            if (fobject.Style.TextAutoResize.IsEmpty() == false)
             {
                 switch (fobject.Style.TextCase)
                 {

@@ -68,8 +68,6 @@ namespace DA_Assets.FCU
                 {
                     rt.SetSmartAnchor(fobject.GetFigmaAnchor());
                 }
-
-                rt.SetSmartPivot(monoBeh.Settings.MainSettings.PivotType);
             }
         }
 

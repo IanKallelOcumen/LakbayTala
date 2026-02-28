@@ -75,9 +75,22 @@ namespace DA_Assets.FCU
                 new GUIContent(FcuLocKey.label_redownload_sprites.Localize(), FcuLocKey.tooltip_redownload_sprites.Localize()),
                 monoBeh.Settings.ImageSpritesSettings.RedownloadSprites);
 
-            gui.Space10();
+            bool procedural = monoBeh.UsingAnyProceduralImage() || monoBeh.IsUITK() || monoBeh.IsNova();
 
-            gui.SerializedPropertyField<FigmaConverterUnity>(scriptableObject.SerializedObject, x => x.Settings.ImageSpritesSettings.DownloadOptions);
+            if (procedural || monoBeh.IsDebug())
+            {
+                gui.Space10();
+
+                monoBeh.Settings.ImageSpritesSettings.DownloadMultipleFills = gui.Toggle(
+                    new GUIContent(FcuLocKey.label_download_multiple_fills.Localize(), FcuLocKey.tooltip_download_multiple_fills.Localize()),
+                    monoBeh.Settings.ImageSpritesSettings.DownloadMultipleFills);
+
+                gui.Space10();
+
+                monoBeh.Settings.ImageSpritesSettings.DownloadUnsupportedGradients = gui.Toggle(
+                    new GUIContent(FcuLocKey.label_download_unsupported_gradients.Localize(), FcuLocKey.tooltip_download_unsupported_gradients.Localize()),
+                    monoBeh.Settings.ImageSpritesSettings.DownloadUnsupportedGradients);
+            }
 
             gui.Space10();
 

@@ -196,13 +196,8 @@ namespace DA_Assets.Extensions
         /// <returns>True if at least one instance of T exists on the scene, otherwise false.</returns>
         public static bool IsExistsOnScene<T>() where T : MonoBehaviour
         {
-#if UNITY_2023_1_OR_NEWER
-            // Use the newer, faster API that stops at the first result (Fixes CS0618)
-            return UnityEngine.Object.FindFirstObjectByType<T>() != null;
-#else
-            // Fallback for older Unity versions
-            return UnityEngine.Object.FindObjectOfType<T>() != null;
-#endif
+            int count = MonoBehaviour.FindObjectsOfType<T>().Length;
+            return count != 0;
         }
 
         /// <summary>

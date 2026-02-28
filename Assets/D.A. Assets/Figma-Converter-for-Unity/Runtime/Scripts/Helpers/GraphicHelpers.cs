@@ -58,11 +58,18 @@ namespace DA_Assets.FCU
                 graphic.FillAlpha1 = true;
             }
 
-            graphic.HasSingleColor = fobject.IsSingleColor(out Color singleColor);
+            bool isSingleColor = fobject.IsSingleColor(out Color singleColor);
             graphic.SpriteSingleColor = singleColor;
 
-            graphic.HasSingleGradient = fobject.IsSingleLinearGradient(out Paint gradient);
-            graphic.SpriteSingleLinearGradient = gradient;
+            if (monoBeh.UsingSVG())
+            {
+                graphic.SpriteSingleLinearGradient = default;
+            }
+            else
+            {
+                fobject.IsSingleLinearGradient(out Paint gradient);
+                graphic.SpriteSingleLinearGradient = gradient;
+            }
 
             graphic.HasFill = !graphic.Fill.SolidPaint.IsDefault() || !graphic.Fill.GradientPaint.IsDefault();
             graphic.HasStroke = nonZeroStroke && (!graphic.Stroke.SolidPaint.IsDefault() || !graphic.Stroke.GradientPaint.IsDefault());
@@ -404,7 +411,7 @@ namespace DA_Assets.FCU
 
             bool procedural = monoBeh.UsingAnyProceduralImage() || monoBeh.IsUITK() || monoBeh.IsNova();
 
-            if (monoBeh.Settings.ImageSpritesSettings.DownloadOptions.HasFlag(SpriteDownloadOptions.MultipleFills) || !procedural)
+            if (monoBeh.Settings.ImageSpritesSettings.DownloadMultipleFills || !procedural)
             {
                 if (ContainsMultipleFills(fobject, out string reason1))
                 {
@@ -413,18 +420,9 @@ namespace DA_Assets.FCU
                 }
             }
 
-            if (monoBeh.Settings.ImageSpritesSettings.DownloadOptions.HasFlag(SpriteDownloadOptions.UnsupportedGradients) || !procedural)
+            if (monoBeh.Settings.ImageSpritesSettings.DownloadUnsupportedGradients || !procedural)
             {
                 if (ContainsUnsupportedGradients(fobject, out string reason1))
-                {
-                    reason = reason1;
-                    return true;
-                }
-            }
-
-            if (monoBeh.Settings.ImageSpritesSettings.DownloadOptions.HasFlag(SpriteDownloadOptions.SupportedGradients) || !procedural)
-            {
-                if (ContainsSupportedGradients(fobject, out string reason1))
                 {
                     reason = reason1;
                     return true;
@@ -464,43 +462,6 @@ namespace DA_Assets.FCU
             }
 
             return null;
-        }
-
-        private bool ContainsSupportedGradients(FObject fobject, out string reason)
-        {
-            reason = null;
-            FGraphic graphic = fobject.Data.Graphic;
-
-            // Nova/UITK do not support gradients
-            if (monoBeh.IsNova() || monoBeh.IsUITK())
-                return false;
-
-            switch (monoBeh.Settings.ImageSpritesSettings.ImageComponent)
-            {
-                // Standard image components: gradients are not supported
-                case ImageComponent.UnityImage:
-                case ImageComponent.RawImage:
-                case ImageComponent.SpriteRenderer:
-                    return false;
-
-                // Only linear gradient is supported
-                case ImageComponent.ProceduralImage:
-                case ImageComponent.SubcShape:
-                case ImageComponent.MPImage:
-                case ImageComponent.RoundedImage:
-                    if (graphic.Fill.HasGradient || graphic.Stroke.HasGradient)
-                    {
-                        if (graphic.Fill.GradientPaint.Type == PaintType.GRADIENT_LINEAR)
-                        {
-                            reason = PaintType.GRADIENT_LINEAR.ToString();
-                            return true;
-                        }
-                    }
-                    break;
-            }
-
-            // No supported gradients found in any of the above cases
-            return false;
         }
 
         private bool ContainsUnsupportedGradients(FObject fobject, out string reason1)

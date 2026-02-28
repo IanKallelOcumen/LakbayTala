@@ -56,15 +56,15 @@ namespace DA_Assets.FCU
         /// <summary>
         /// Called when a fobject's GameObject is created on the scene. Called once per GameObject.
         /// </summary>
-        [SerializeField] UnityEvent<FigmaConverterUnity, FObject> onObjectInstantiate;
+        [SerializeField] UnityEvent<FigmaConverterUnity, GameObject> onObjectInstantiate;
         [SerializeProperty(nameof(onObjectInstantiate))]
-        public UnityEvent<FigmaConverterUnity, FObject> OnObjectInstantiate => onObjectInstantiate;
+        public UnityEvent<FigmaConverterUnity, GameObject> OnObjectInstantiate => onObjectInstantiate;
 
         /// <summary>
         /// Called when a component is added to a GameObject based on tag. Called multiple times per GameObject.
         /// </summary>
-        [SerializeField] UnityEvent<FigmaConverterUnity, FObject, FcuTag> onAddComponent;
+        [SerializeField] UnityEvent<FigmaConverterUnity, SyncData, FcuTag> onAddComponent;
         [SerializeProperty(nameof(onAddComponent))]
-        public UnityEvent<FigmaConverterUnity, FObject, FcuTag> OnAddComponent => onAddComponent;
+        public UnityEvent<FigmaConverterUnity, SyncData, FcuTag> OnAddComponent => onAddComponent;
     }
 }

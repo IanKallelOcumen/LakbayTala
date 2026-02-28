@@ -48,7 +48,7 @@ namespace DA_Assets.FCU
                 monoBeh.Settings.LocalizationSettings.Localizator = (ScriptableObject)gui.ObjectField(
                     new GUIContent(FcuLocKey.label_localizator.Localize()),
                     monoBeh.Settings.LocalizationSettings.Localizator,
-                    typeof(LocalizatorBase),
+                    typeof(LocalizatorBase<>),
                     false);
 #endif
                 if (monoBeh.Settings.LocalizationSettings.Localizator == null)

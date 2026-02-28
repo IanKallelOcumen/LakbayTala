@@ -12,7 +12,7 @@ namespace DA_Assets.DAI
     {
         private static Dictionary<int, T1> _instances = new Dictionary<int, T1>();
 
-        public static T1 GetInstance(T2 inspector, T3 monoBeh, Vector2 windowSize, bool fixedSize, string title)
+        public static T1 GetInstance(T2 inspector, T3 monoBeh, Vector2 windowSize, bool fixedSize)
         {
             T1 result;
 
@@ -22,7 +22,6 @@ namespace DA_Assets.DAI
             {
                 result = ScriptableObject.CreateInstance<T1>();
                 _instances[monoBeh.GetInstanceID()] = result;
-                result.titleContent = new GUIContent(title);
             }
 
             result.Inspector = inspector;

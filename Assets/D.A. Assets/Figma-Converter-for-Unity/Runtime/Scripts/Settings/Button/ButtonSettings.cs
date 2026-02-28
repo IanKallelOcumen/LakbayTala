@@ -1,7 +1,6 @@
 ﻿using DA_Assets.DAI;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DA_Assets.FCU.Model
 {
@@ -23,20 +22,10 @@ namespace DA_Assets.FCU.Model
         [SerializeProperty(nameof(unityButtonSettings))]
         public UnityButtonSettings UnityButtonSettings => monoBeh.Link(ref unityButtonSettings);
 
-        [SerializeField] ButtonTransitionType transition;
-        [SerializeProperty(nameof(transition))]
-        public ButtonTransitionType TransitionType { get; set; }
-
 #if DABUTTON_EXISTS
         [SerializeField] DAB_Settings dabSettings;
         [SerializeProperty(nameof(dabSettings))]
         public DAB_Settings DAB_Settings => monoBeh.Link(ref dabSettings);
 #endif
-    }
-
-    public enum ButtonTransitionType 
-    {
-        Default,
-        SpriteSwapForAll
     }
 }

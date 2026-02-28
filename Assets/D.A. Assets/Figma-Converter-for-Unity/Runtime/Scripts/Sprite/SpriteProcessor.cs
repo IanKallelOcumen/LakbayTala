@@ -40,25 +40,6 @@ namespace DA_Assets.FCU
             return sprite;
         }
 
-        public void SaveSprite(Texture2D texture, FObject fobject)
-        {
-#if UNITY_EDITOR
-            string path = fobject.Data.SpritePath;
-
-            byte[] bytes = texture.EncodeToPNG();
-
-            System.IO.File.WriteAllBytes(path, bytes);
-
-            AssetDatabase.Refresh();
-
-            TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
-            importer.textureType = TextureImporterType.Sprite;
-            importer.spriteImportMode = SpriteImportMode.Single;
-
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
-#endif
-        }
-
 #if UNITY_EDITOR
         public async Task MarkAsSprites(List<FObject> fobjects)
         {
@@ -226,13 +207,13 @@ namespace DA_Assets.FCU
 
                 SetRasterTextureSize(fobject, importer);
 
-                if (IsRasterTextureSettingsCorrect(fobject, importer))
+                if (IsRasterTextureSettingsCorrect(importer))
                 {
                     return true;
                 }
                 else
                 {
-                    UpdateRasterTextureSettings(fobject, importer);
+                    UpdateRasterTextureSettings(importer);
                     return false;
                 }
             }
@@ -251,7 +232,7 @@ namespace DA_Assets.FCU
             fobject.Data.SpriteSize = new Vector2Int(width, height);
         }
 
-        private bool IsRasterTextureSettingsCorrect(FObject fobject, TextureImporter importer)
+        private bool IsRasterTextureSettingsCorrect(TextureImporter importer)
         {
             bool part1 = importer.isReadable == monoBeh.Settings.TextureImporterSettings.IsReadable &&
                    importer.textureType == monoBeh.Settings.TextureImporterSettings.TextureType &&
@@ -266,10 +247,6 @@ namespace DA_Assets.FCU
             {
                 perUnit = importer.spritePixelsPerUnit == monoBeh.Settings.ImageSpritesSettings.ImageScale;
             }
-            else if (fobject.ContainsTag(FcuTag.Slice9))
-            {
-                perUnit = importer.spritePixelsPerUnit == (int)(fobject.Data.Scale * 100f);
-            }
             else
             {
                 perUnit = importer.spritePixelsPerUnit == monoBeh.Settings.ImageSpritesSettings.PixelsPerUnit;
@@ -278,7 +255,7 @@ namespace DA_Assets.FCU
             return part1 && perUnit;
         }
 
-        private void UpdateRasterTextureSettings(FObject fobject, TextureImporter importer)
+        private void UpdateRasterTextureSettings(TextureImporter importer)
         {
             importer.isReadable = monoBeh.Settings.TextureImporterSettings.IsReadable;
             importer.textureType = monoBeh.Settings.TextureImporterSettings.TextureType;
@@ -290,10 +267,6 @@ namespace DA_Assets.FCU
             if (monoBeh.UsingSpriteRenderer())
             {
                 importer.spritePixelsPerUnit = monoBeh.Settings.ImageSpritesSettings.ImageScale;
-            }
-            else if (fobject.ContainsTag(FcuTag.Slice9))
-            {
-                importer.spritePixelsPerUnit = (int)(fobject.Data.Scale * 100f);
             }
             else
             {

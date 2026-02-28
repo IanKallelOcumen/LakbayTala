@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 
 #if U2D_SPRITE_EXISTS
@@ -11,7 +11,7 @@ public class SpriteEditorUtility
     /// <summary>
     /// com.unity.2d.sprite@1.0.0\Documentation~\DataProvider.md
     /// </summary>
-    public static void SetSpriteRects(Sprite sprite, Vector4 border)
+    public static void SetSpriteRects(Sprite sprite, int left, int top, int right, int bottom)
     {
 #if U2D_SPRITE_EXISTS
         SpriteDataProviderFactories factory = new SpriteDataProviderFactories();
@@ -31,7 +31,7 @@ public class SpriteEditorUtility
         {
             if (rect.spriteID == sprite.GetSpriteID())
             {
-                rect.border = border;
+                rect.border = new Vector4(left, bottom, right, top);
                 Debug.Log($"Updated border to: {rect.border}");
             }
         }
@@ -39,15 +39,10 @@ public class SpriteEditorUtility
         dataProvider.SetSpriteRects(spriteRects);
         dataProvider.Apply();
 
-        TextureImporter textureImporter = dataProvider.targetObject as TextureImporter;
-        if (textureImporter != null)
+        AssetImporter assetImporter = dataProvider.targetObject as AssetImporter;
+        if (assetImporter != null)
         {
-            TextureImporterSettings settings = new TextureImporterSettings();
-            textureImporter.ReadTextureSettings(settings);
-            settings.spriteMeshType = SpriteMeshType.FullRect;
-            textureImporter.SetTextureSettings(settings);
-            textureImporter.SaveAndReimport();
-
+            assetImporter.SaveAndReimport();
             Debug.Log("Asset reimported successfully");
         }
         else

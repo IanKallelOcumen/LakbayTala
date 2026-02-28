@@ -297,7 +297,7 @@ namespace DA_Assets.FCU.Drawers
                     Action onDraw = () =>
                     {
                         drawnObjectsCount++;
-                        monoBeh.Events.OnAddComponent?.Invoke(monoBeh, fobject, tag);
+                        monoBeh.Events.OnAddComponent?.Invoke(monoBeh, fobject.Data, tag);
                     };
 
                     _ = drawByTag(fobject, tag, onDraw);

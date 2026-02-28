@@ -32,7 +32,7 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
             {
                 layoutGroup.childForceExpandWidth = true;
             }
-            else if (fobject.CounterAxisAlignItems == CounterAxisAlignItem.SPACE_BETWEEN)
+            else if (fobject.PrimaryAxisAlignItems == PrimaryAxisAlignItem.SPACE_BETWEEN)
             {
                 layoutGroup.childForceExpandWidth = true;
             }
@@ -45,36 +45,13 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
             {
                 layoutGroup.childForceExpandHeight = true;
             }
-            else if (fobject.PrimaryAxisAlignItems == PrimaryAxisAlignItem.SPACE_BETWEEN)
+            else if (fobject.CounterAxisAlignItems == CounterAxisAlignItem.SPACE_BETWEEN)
             {
                 layoutGroup.childForceExpandHeight = true;
             }
             else
             {
                 layoutGroup.childForceExpandHeight = false;
-            }
-
-            // Add and configure ContentSizeFitter
-            fobject.Data.GameObject.TryAddComponent(out ContentSizeFitter csf);
-
-            if (fobject.PrimaryAxisSizingMode == PrimaryAxisSizingMode.AUTO || 
-                fobject.PrimaryAxisSizingMode == PrimaryAxisSizingMode.NONE)
-            {
-                csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            }
-            else
-            {
-                csf.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
-            }
-
-            if (fobject.CounterAxisSizingMode == CounterAxisSizingMode.AUTO || 
-                fobject.CounterAxisSizingMode == CounterAxisSizingMode.NONE)
-            {
-                csf.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            }
-            else
-            {
-                csf.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
             }
         }
     }

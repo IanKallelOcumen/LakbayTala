@@ -193,8 +193,8 @@
         label_download_fonts_from_project,
         tooltip_download_fonts_from_project,
 
-        label_sprite_download_options,
-        tooltip_sprite_download_options,
+        label_download_multiple_fills,
+        tooltip_download_multiple_fills,
 
         label_download_unsupported_gradients,
         tooltip_download_unsupported_gradients,
@@ -769,8 +769,6 @@
         tooltip_serialization_mode,
 
         label_max_sprite_size,
-        tooltip_max_sprite_size,
-        label_transition_type,
-        tooltip_transition_type
+        tooltip_max_sprite_size
     }
 }

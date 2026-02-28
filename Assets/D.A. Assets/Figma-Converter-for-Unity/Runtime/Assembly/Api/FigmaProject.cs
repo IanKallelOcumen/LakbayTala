@@ -202,11 +202,11 @@ namespace DA_Assets.FCU.Model
 #if JSONNET_EXISTS
         [JsonProperty("primaryAxisSizingMode")]
 #endif
-        public PrimaryAxisSizingMode PrimaryAxisSizingMode { get; set; }
+        public string PrimaryAxisSizingMode { get; set; }
 #if JSONNET_EXISTS
         [JsonProperty("counterAxisSizingMode")]
 #endif
-        public CounterAxisSizingMode CounterAxisSizingMode { get; set; }
+        public string CounterAxisSizingMode { get; set; }
 #if JSONNET_EXISTS
         [JsonProperty("counterAxisAlignContent")]
 #endif
@@ -474,7 +474,7 @@ namespace DA_Assets.FCU.Model
 #if JSONNET_EXISTS
         [JsonProperty("textAutoResize")]
 #endif
-        public TextAutoResize TextAutoResize { get; set; }
+        public string TextAutoResize { get; set; }
 #if JSONNET_EXISTS
         [JsonProperty("fontSize")]
 #endif
@@ -888,27 +888,5 @@ namespace DA_Assets.FCU.Model
         NONE,
         INHERIT,
         STRETCH
-    }
-
-    public enum TextAutoResize
-    {
-        NONE,
-        HEIGHT,
-        WIDTH_AND_HEIGHT,
-        TRUNCATE
-    }
-
-    public enum PrimaryAxisSizingMode
-    {
-        NONE,
-        FIXED,
-        AUTO
-    }
-
-    public enum CounterAxisSizingMode
-    {
-        NONE,
-        FIXED,
-        AUTO
     }
 }

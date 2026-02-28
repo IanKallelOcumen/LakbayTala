@@ -13,20 +13,12 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
     {
         public void Draw(FObject fobject)
         {
-            switch (fobject.Style.TextAutoResize)
+            if (fobject.Style.TextAutoResize == "WIDTH_AND_HEIGHT")
             {
-                case TextAutoResize.WIDTH_AND_HEIGHT:
-                    fobject.Data.GameObject.TryAddComponent(out ContentSizeFitter csfWH);
+                fobject.Data.GameObject.TryAddComponent(out ContentSizeFitter csf);
 
-                    csfWH.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-                    csfWH.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-                    break;
-                case TextAutoResize.HEIGHT:
-                    fobject.Data.GameObject.TryAddComponent(out ContentSizeFitter csfH);
-
-                    csfH.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-                    csfH.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-                    break;
+                csf.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+                csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
         }
     }

@@ -7,8 +7,6 @@ using UnityEngine;
 using Newtonsoft.Json;
 #endif
 
-#pragma warning disable CS0162
-
 namespace DA_Assets.FCU
 {
     public class DAJson
@@ -45,7 +43,7 @@ namespace DA_Assets.FCU
             try
             {
 #if JSONNET_EXISTS == false
-                throw new MissingComponentException("Newtonsoft.Json packaghe is not installed.");
+                throw new MissingComponentException("Json.NET packaghe is not installed.");
 #endif
                 JFResult jfr = default;
 

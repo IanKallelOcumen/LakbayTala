@@ -1,13 +1,12 @@
 using UnityEngine;
 using Platformer.Mechanics;
 using LakbayTala.Lore.Data;
-using LakbayTala.UI.Lore;
 
 namespace LakbayTala.Lore
 {
     /// <summary>
     /// Trigger that shows a Lore Card when the player enters. Place in the game world so players can find lore.
-    /// If LoreManager has LoreData for loreId, uses LoreCardUI (full card with reveal). Otherwise uses LoreCardController (simple panel).
+    /// Uses LoreCardController — assign your card panel and text/close button in the Inspector.
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
     public class LoreMarker : MonoBehaviour
@@ -40,14 +39,10 @@ namespace LakbayTala.Lore
                 }
             }
 
-            if (data != null)
+            if (data != null && LoreCardController.Instance != null)
             {
-                var cardUI = Object.FindFirstObjectByType<LoreCardUI>();
-                if (cardUI != null)
-                {
-                    cardUI.DisplayLore(data);
-                    return;
-                }
+                LoreCardController.Instance.Show(loreId, data.title, data.shortDescription ?? data.fullDescription ?? shortText, data.illustration ?? image);
+                return;
             }
 
             if (LoreCardController.Instance != null)

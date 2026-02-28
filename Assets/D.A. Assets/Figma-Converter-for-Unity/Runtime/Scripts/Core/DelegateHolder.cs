@@ -14,7 +14,7 @@ namespace DA_Assets.FCU
     {
         public Action<PreImportInput, Action<PreImportOutput>> ShowDifferenceChecker { get; set; }
         public Func<Vector2, bool> SetGameViewSize { get; set; }
-        public Action<Sprite, Vector4> SetSpriteRects { get; set; }
+        public Action<Sprite, int, int, int, int> SetSpriteRects { get; set; }
         public Action UpdateScrollContent { get; set; }
     }
 }

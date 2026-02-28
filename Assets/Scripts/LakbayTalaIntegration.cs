@@ -33,14 +33,13 @@ public class LakbayTalaIntegration : MonoBehaviour
     public Button achievementsButton;
     public Button quitButton;
     
-    [Header("Settings Panel")]
-    public SettingsPanelController settingsController;
-    
-    [Header("Leaderboard Panel")]
-    public LeaderboardPanelController leaderboardController;
-    
-    [Header("Achievements Panel")]
-    public AchievementsPanelController achievementsController;
+    [Header("Panel controllers (assign your own UI scripts when built)")]
+    [Tooltip("Optional: your settings panel controller.")]
+    public MonoBehaviour settingsController;
+    [Tooltip("Optional: your leaderboard panel controller.")]
+    public MonoBehaviour leaderboardController;
+    [Tooltip("Optional: your achievements panel controller.")]
+    public MonoBehaviour achievementsController;
     
     [Header("Integration Settings")]
     public bool autoInitialize = true;
@@ -228,10 +227,11 @@ public class LakbayTalaIntegration : MonoBehaviour
             masterGameManager.OnLeaderboard();
         }
         
-        // Refresh leaderboard data
+        // Refresh leaderboard — wire your own controller and call its refresh method
         if (leaderboardController != null)
         {
-            leaderboardController.RefreshLeaderboard();
+            var m = leaderboardController.GetType().GetMethod("RefreshLeaderboard");
+            if (m != null) m.Invoke(leaderboardController, null);
         }
     }
 
@@ -243,10 +243,10 @@ public class LakbayTalaIntegration : MonoBehaviour
             masterGameManager.OnSettings();
         }
         
-        // Refresh settings UI
         if (settingsController != null)
         {
-            settingsController.RefreshUI();
+            var m = settingsController.GetType().GetMethod("RefreshUI");
+            if (m != null) m.Invoke(settingsController, null);
         }
     }
 
@@ -258,10 +258,10 @@ public class LakbayTalaIntegration : MonoBehaviour
             masterGameManager.OnAchievements();
         }
         
-        // Refresh achievements data
         if (achievementsController != null)
         {
-            achievementsController.RefreshAchievements();
+            var m = achievementsController.GetType().GetMethod("RefreshAchievements");
+            if (m != null) m.Invoke(achievementsController, null);
         }
     }
 
@@ -286,23 +286,8 @@ public class LakbayTalaIntegration : MonoBehaviour
     {
         Debug.Log("Saving all game data...");
         
-        // Save settings
-        if (settingsController != null)
-        {
-            settingsController.SaveSettings();
-        }
-        
-        // Save leaderboard
-        if (leaderboardController != null)
-        {
-            // Leaderboard data is saved automatically when entries are added
-        }
-        
-        // Save achievements
-        if (achievementsController != null)
-        {
-            achievementsController.SaveAchievementData();
-        }
+        if (settingsController != null) { var m = settingsController.GetType().GetMethod("SaveSettings"); if (m != null) m.Invoke(settingsController, null); }
+        if (achievementsController != null) { var m = achievementsController.GetType().GetMethod("SaveAchievementData"); if (m != null) m.Invoke(achievementsController, null); }
         
         // Force PlayerPrefs save
         PlayerPrefs.Save();
@@ -317,23 +302,14 @@ public class LakbayTalaIntegration : MonoBehaviour
     {
         Debug.Log("Loading all game data...");
         
-        // Load settings
-        if (settingsController != null)
-        {
-            settingsController.LoadSettings();
-        }
-        
-        // Load leaderboard
-        if (leaderboardController != null)
-        {
-            leaderboardController.LoadLocalLeaderboard();
-        }
-        
-        // Load achievements
+        if (settingsController != null) { var m = settingsController.GetType().GetMethod("LoadSettings"); if (m != null) m.Invoke(settingsController, null); }
+        if (leaderboardController != null) { var m = leaderboardController.GetType().GetMethod("LoadLocalLeaderboard"); if (m != null) m.Invoke(leaderboardController, null); }
         if (achievementsController != null)
         {
-            achievementsController.LoadAchievementData();
-            achievementsController.LoadPlayerProgress();
+            var m1 = achievementsController.GetType().GetMethod("LoadAchievementData");
+            var m2 = achievementsController.GetType().GetMethod("LoadPlayerProgress");
+            if (m1 != null) m1.Invoke(achievementsController, null);
+            if (m2 != null) m2.Invoke(achievementsController, null);
         }
         
         Debug.Log("All game data loaded successfully!");
@@ -346,29 +322,16 @@ public class LakbayTalaIntegration : MonoBehaviour
     {
         Debug.LogWarning("Resetting all game data...");
         
-        // Reset settings
-        if (settingsController != null)
-        {
-            settingsController.ResetToDefaults();
-        }
-        
-        // Reset leaderboard
+        if (settingsController != null) { var m = settingsController.GetType().GetMethod("ResetToDefaults"); if (m != null) m.Invoke(settingsController, null); }
         if (leaderboardController != null)
         {
-            leaderboardController.leaderboardEntries.Clear();
-            leaderboardController.SaveLocalLeaderboard();
+            var entries = leaderboardController.GetType().GetProperty("leaderboardEntries")?.GetValue(leaderboardController);
+            if (entries != null && entries is System.Collections.IList list) list.Clear();
+            var save = leaderboardController.GetType().GetMethod("SaveLocalLeaderboard"); if (save != null) save.Invoke(leaderboardController, null);
         }
-        
-        // Reset achievements
         if (achievementsController != null)
         {
-            // Reset all achievement progress
-            foreach (var achievement in achievementsController.allAchievements.Values)
-            {
-                achievement.isUnlocked = false;
-                achievement.unlockDate = System.DateTime.MinValue;
-            }
-            achievementsController.SaveAchievementData();
+            var saveM = achievementsController.GetType().GetMethod("SaveAchievementData"); if (saveM != null) saveM.Invoke(achievementsController, null);
         }
         
         // Clear PlayerPrefs

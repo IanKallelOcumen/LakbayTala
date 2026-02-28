@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using UnityEditor;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace DA_Assets.DAI
@@ -99,21 +98,15 @@ namespace DA_Assets.DAI
                         double currentTime = _stopwatch.Elapsed.TotalSeconds;
                         _deltaTime = currentTime - _previousTime;
                         _previousTime = currentTime;
+
                         context.Post(_ => update(), null);
+
                         Thread.Sleep(_frequencyMs);
                     }
                 }
-                // Add Code Start
-                catch (ThreadAbortException ex)
-                {
-                    if (Application.isBatchMode) return;
-                    context.Post(_ => { Debug.LogError($"Error in background thread: {ex.Message}"); }, null);
-                }
-                // Add Code End
                 catch (Exception ex)
                 {
-                    // Change Code
-                    context.Post(_ => { Debug.LogError($"Error in background thread: {ex.Message}"); }, null);
+                    Debug.LogError($"Error in background thread: {ex.Message}");
                 }
             });
 

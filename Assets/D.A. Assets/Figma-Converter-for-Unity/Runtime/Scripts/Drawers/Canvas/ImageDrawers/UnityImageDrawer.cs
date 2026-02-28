@@ -132,7 +132,7 @@ namespace DA_Assets.FCU.Drawers.CanvasDrawers
                 {
                     img.color = fobject.Data.Graphic.SpriteSingleColor;
                 }
-                else if (fobject.Data.Graphic.HasSingleGradient && !monoBeh.Settings.ImageSpritesSettings.DownloadOptions.HasFlag(SpriteDownloadOptions.SupportedGradients))
+                else if (!fobject.Data.Graphic.SpriteSingleLinearGradient.IsDefault())
                 { 
                     monoBeh.CanvasDrawer.ImageDrawer.AddGradient(fobject, fobject.Data.Graphic.SpriteSingleLinearGradient);
                 }

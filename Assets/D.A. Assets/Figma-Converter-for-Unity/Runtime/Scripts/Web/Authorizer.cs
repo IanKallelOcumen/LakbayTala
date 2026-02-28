@@ -45,11 +45,11 @@ namespace DA_Assets.FCU
 
         public async void Init()
         {
-            if (!monoBeh.IsJsonNetExists())
+            if (monoBeh.IsJsonNetExists() == false)
             {
                 _options = new GUIContent[]
                 {
-                     new GUIContent($"Newtonsoft.Json is not installed.")
+                     new GUIContent($"Error.")
                 };
 
                 DALogger.LogError(FcuLocKey.log_cant_find_package.Localize(DAConstants.JsonNetPackageName));

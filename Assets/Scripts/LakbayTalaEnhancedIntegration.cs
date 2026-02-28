@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Reflection;
 
 /// <summary>
 /// Comprehensive enhanced integration system for LakbayTala educational platformer.
@@ -64,11 +65,13 @@ public class LakbayTalaEnhancedIntegration : MonoBehaviour
     [Tooltip("Enable cultural quiz system")]
     public bool enableCulturalQuiz = true;
     
-    [Header("System Components")]
-    public LakbayTalaUITheme uiTheme;
-    public LakbayTalaLeaderboardPanel leaderboardPanel;
-    public LakbayTalaSettingsPanel settingsPanel;
-    public LakbayTalaPlaceholderSystem placeholderSystem;
+    [Header("System Components (assign your own UI scripts when built)")]
+    [Tooltip("Optional: your UI theme component.")]
+    public MonoBehaviour uiThemeRef;
+    [Tooltip("Optional: your leaderboard panel component.")]
+    public MonoBehaviour leaderboardPanelRef;
+    [Tooltip("Optional: your settings panel component.")]
+    public MonoBehaviour settingsPanelRef;
     // public AudioManager audioManager; // Commented out - AudioManager not found
     
     [Header("Educational Content")]
@@ -140,19 +143,7 @@ public class LakbayTalaEnhancedIntegration : MonoBehaviour
     /// </summary>
     private void InitializeSystem()
     {
-        // Initialize component references
-        if (uiTheme == null)
-            uiTheme = LakbayTalaUITheme.Instance;
-        
-        if (leaderboardPanel == null)
-            leaderboardPanel = LakbayTalaLeaderboardPanel.Instance;
-        
-        if (settingsPanel == null)
-            settingsPanel = LakbayTalaSettingsPanel.Instance;
-        
-        if (placeholderSystem == null)
-            placeholderSystem = LakbayTalaPlaceholderSystem.Instance;
-        
+        // Assign your own UI theme/panel scripts in Inspector when built
         // if (audioManager == null)
         //     audioManager = AudioManager.Instance; // Commented out - AudioManager not found
         
@@ -168,11 +159,12 @@ public class LakbayTalaEnhancedIntegration : MonoBehaviour
     private void SetupEducationalMode()
     {
         // Configure UI for educational mode
-        if (uiTheme != null)
+        if (uiThemeRef != null)
         {
-            uiTheme.enableCulturalTooltips = enableCulturalTooltips;
-            uiTheme.currentLanguage = currentLanguage;
-            uiTheme.enableStoryIntroductions = enableStoryNarration;
+            var t = uiThemeRef.GetType();
+            TrySet(t, uiThemeRef, "enableCulturalTooltips", enableCulturalTooltips);
+            TrySet(t, uiThemeRef, "currentLanguage", currentLanguage);
+            TrySet(t, uiThemeRef, "enableStoryIntroductions", enableStoryNarration);
         }
         
         // Configure audio for educational content (AudioManager optional)
@@ -433,11 +425,12 @@ public class LakbayTalaEnhancedIntegration : MonoBehaviour
     /// </summary>
     private void SetupCulturalComponents()
     {
-        if (uiTheme != null)
+        if (uiThemeRef != null)
         {
-            uiTheme.enableCulturalTooltips = enableCulturalTooltips;
-            uiTheme.currentLanguage = currentLanguage;
-            uiTheme.enableBaybayin = enableBaybayinLearning;
+            var t = uiThemeRef.GetType();
+            TrySet(t, uiThemeRef, "enableCulturalTooltips", enableCulturalTooltips);
+            TrySet(t, uiThemeRef, "currentLanguage", currentLanguage);
+            TrySet(t, uiThemeRef, "enableBaybayin", enableBaybayinLearning);
         }
     }
     
@@ -786,6 +779,14 @@ public class LakbayTalaEnhancedIntegration : MonoBehaviour
         }
         
         return knowledgeCount > 0 ? totalKnowledge / knowledgeCount : 0f;
+    }
+
+    private static void TrySet(System.Type type, object target, string name, object value)
+    {
+        var prop = type.GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+        if (prop != null && prop.CanWrite) { prop.SetValue(target, value); return; }
+        var field = type.GetField(name, BindingFlags.Public | BindingFlags.Instance);
+        if (field != null) field.SetValue(target, value);
     }
     
     void OnDestroy()
